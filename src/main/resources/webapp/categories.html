@@ -1,0 +1,69 @@
+<h1>Categories</h1>
+
+
+<h2>Create new</h2>
+<div id="newCategory" class="hideOnLoad">
+  <form id="createCategoryForm">
+    <input type="text" name="displayName" id="categoryDisplayName" placeholder="Category name" />
+    <input type="color" value="#00ff00" name="color" id="categoryColor" placeholder="Category color" />
+    <button>Save</button>
+  </form>
+</div>
+<div id="newCategorySpinner" class="displayOnLoad notLoading">
+      <p>
+      <img src="images/ajax-loader.gif" alt="Please wait" />
+      </p>
+</div>
+
+<h2>Existing</h2>
+
+<table id="categories">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Color</th>
+    </tr>
+  </thead>
+</table>
+
+<script id="categoryRowTemplate" type="text/html">
+<tr>
+	<td><%= displayName %></td>
+	<td><%= color %><span style="color: <%= color %>"><%= color %></td>
+</tr>
+</script>
+
+<script>
+$("#createCategoryForm").on('submit', function(e) {
+	e.preventDefault();
+	
+	$("#newCategory").addClass("loading");
+	$("#newCategorySpinner").removeClass("notLoading");
+	var newCategory = {
+			displayName: $("#categoryDisplayName").val(), 
+			color: $("#categoryColor").val() 
+	};
+	$.post("api/categories", newCategory)
+		.then(function() {
+			$("#createCategoryForm").trigger('reset');
+			getCategories();
+		});
+});
+
+function getCategories() {
+  $.get("api/categories", function(data) {
+  	var rowTemplate = _.template($("#categoryRowTemplate").html());
+  	
+  	var tbody = $("<tbody>");
+  	
+  	for (var i=0; i<data.categories.length; i++) {
+  		tbody.append(rowTemplate(data.categories[i]));
+  	}
+  	
+  	$("#categories tbody").remove();
+  	$("#categories").append(tbody);
+  });
+}
+
+getCategories();
+</script>
