@@ -1,11 +1,8 @@
-package com.johannesbrodwall.infrastructure.webserver;
+package com.johannesbrodwall.infrastructure.web;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import com.johannesbrodwall.events.JSONConvertible;
-import com.johannesbrodwall.events.PostController;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,11 +12,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class JSONController implements Controller, PostController {
+public abstract class JSONController implements GetController, PostController {
 
     @Override
     public final void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        JSONObject response = handleRequest(req);
+        JSONObject response = getJSON(req);
 
         resp.setContentType("application/json");
         try (Writer writer = resp.getWriter()) {
@@ -27,19 +24,19 @@ public abstract class JSONController implements Controller, PostController {
         }
     }
 
-    protected abstract JSONObject handleRequest(HttpServletRequest req);
+    protected abstract JSONObject getJSON(HttpServletRequest req);
 
     protected JSONArray toJSONArray(List<? extends JSONConvertible> objects) {
-        return new JSONArray(objects.stream().map(JSONConvertible::toJSON));
+        return new JSONArray(objects.stream().map(JSONConvertible::toJSON).toArray());
     }
 
-    protected abstract void handlePost(JSONObject object);
+    protected abstract void postJSON(JSONObject object);
 
     @Override
     public final void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Reader reader = req.getReader()) {
             JSONObject obj = new JSONObject(new JSONTokener(reader));
-            handlePost(obj);
+            postJSON(obj);
             resp.sendError(HttpServletResponse.SC_ACCEPTED);
         }
     }

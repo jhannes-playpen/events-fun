@@ -1,4 +1,4 @@
-package com.johannesbrodwall.infrastructure.webserver;
+package com.johannesbrodwall.infrastructure.web;
 
 import javax.servlet.http.HttpServletRequest;
 

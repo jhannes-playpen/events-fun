@@ -1,4 +1,4 @@
-package com.johannesbrodwall.events;
+package com.johannesbrodwall.infrastructure.web;
 
 import java.io.IOException;
 

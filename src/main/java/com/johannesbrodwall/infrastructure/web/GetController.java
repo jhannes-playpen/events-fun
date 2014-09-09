@@ -1,11 +1,11 @@
-package com.johannesbrodwall.infrastructure.webserver;
+package com.johannesbrodwall.infrastructure.web;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface Controller {
+public interface GetController {
 
     void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 

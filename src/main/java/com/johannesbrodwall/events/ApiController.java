@@ -1,7 +1,12 @@
 package com.johannesbrodwall.events;
 
-import com.johannesbrodwall.infrastructure.webserver.Controller;
-import com.johannesbrodwall.infrastructure.webserver.ServletUtils;
+import com.johannesbrodwall.events.category.CategoryController;
+import com.johannesbrodwall.infrastructure.AppConfiguration;
+import com.johannesbrodwall.infrastructure.db.Database;
+import com.johannesbrodwall.infrastructure.db.Transaction;
+import com.johannesbrodwall.infrastructure.web.GetController;
+import com.johannesbrodwall.infrastructure.web.PostController;
+import com.johannesbrodwall.infrastructure.web.ServletUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ApiController extends HttpServlet {
 
+    private Database database = new Database(new AppConfiguration("events.properties"));
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -24,9 +31,10 @@ public class ApiController extends HttpServlet {
             return;
         }
 
-        try {
+        try (Transaction tx = database.transaction()) {
             ClientUserSession.setCurrent(session);
             super.service(req, resp);
+            tx.setCommit();
         } finally {
             ClientUserSession.setCurrent(null);
         }
@@ -37,7 +45,7 @@ public class ApiController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
-        Controller controller = getControllers().get(req.getPathInfo());
+        GetController controller = getControllers().get(req.getPathInfo());
         if (controller != null) {
             controller.doGet(req, resp);
         } else {
@@ -57,8 +65,8 @@ public class ApiController extends HttpServlet {
     }
 
 
-    private Map<String,Controller> getControllers() {
-        Map<String, Controller> controllers = new HashMap<>();
+    private Map<String,GetController> getControllers() {
+        Map<String, GetController> controllers = new HashMap<>();
 
         controllers.put("/frontPage", new FrontPageController());
         controllers.put("/categories", new CategoryController());

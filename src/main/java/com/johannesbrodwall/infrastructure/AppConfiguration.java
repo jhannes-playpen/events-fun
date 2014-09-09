@@ -14,7 +14,11 @@ public class AppConfiguration {
     private long nextCheckTime = 0;
     private long lastLoadTime = 0;
     private Properties properties = new Properties();
-    protected File file;
+    private final File configFile;
+
+    public AppConfiguration(String filename) {
+        this.configFile = new File(filename);
+    }
 
     public String getProperty(String propertyName, String defaultValue) {
         String result = getProperty(propertyName);
@@ -45,13 +49,13 @@ public class AppConfiguration {
     private synchronized void ensureConfigurationIsFresh() {
         if (System.currentTimeMillis() < nextCheckTime) return;
         nextCheckTime = System.currentTimeMillis() + 10000;
-        log.trace("Rechecking {}", file);
+        log.trace("Rechecking {}", configFile);
 
-        if (lastLoadTime >= file.lastModified()) return;
-        lastLoadTime = file.lastModified();
-        log.debug("Reloading {}", file);
+        if (lastLoadTime >= configFile.lastModified()) return;
+        lastLoadTime = configFile.lastModified();
+        log.debug("Reloading {}", configFile);
 
-        try (FileInputStream inputStream = new FileInputStream(file)) {
+        try (FileInputStream inputStream = new FileInputStream(configFile)) {
             properties.clear();
             properties.load(inputStream);
         } catch (FileNotFoundException e) {

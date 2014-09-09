@@ -1,7 +1,7 @@
 package com.johannesbrodwall.events.web;
 
 import com.johannesbrodwall.events.ClientUserSession;
-import com.johannesbrodwall.infrastructure.webserver.ServletUtils;
+import com.johannesbrodwall.infrastructure.web.ServletUtils;
 
 import java.io.IOException;
 

@@ -40,14 +40,13 @@ $("#createCategoryForm").on('submit', function(e) {
 	$("#newCategory").addClass("loading");
 	$("#newCategorySpinner").removeClass("notLoading");
 	var newCategory = {
-			displayName: $("#categoryDisplayName").val(), 
-			color: $("#categoryColor").val() 
+		displayName: $("#categoryDisplayName").val(), 
+		color: $("#categoryColor").val() 
 	};
-	$.post("api/categories", newCategory)
-		.then(function() {
-			$("#createCategoryForm").trigger('reset');
-			getCategories();
-		});
+	$.post("api/categories", JSON.stringify(newCategory),  function() {
+		$("#createCategoryForm").trigger('reset');
+		getCategories();
+	});
 });
 
 function getCategories() {

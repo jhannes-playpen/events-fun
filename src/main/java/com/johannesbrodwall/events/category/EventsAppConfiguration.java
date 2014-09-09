@@ -1,13 +1,11 @@
-package com.johannesbrodwall.events;
+package com.johannesbrodwall.events.category;
 
 import com.johannesbrodwall.infrastructure.AppConfiguration;
-
-import java.io.File;
 
 public class EventsAppConfiguration extends AppConfiguration {
 
     public EventsAppConfiguration(String filename) {
-        this.file = new File(filename);
+        super(filename);
     }
 
     private static final EventsAppConfiguration instance = new EventsAppConfiguration("events.properties");

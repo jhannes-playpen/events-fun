@@ -11,6 +11,7 @@
   <logger name="com.johannesbrodwall" level="debug" />
   
   <logger name="org.eclipse.jetty" level="warn" />
+  <logger name="com.mchange.v2.log.MLog" level="warn" />
   
   <root level="info">
     <appender-ref ref="STDOUT" />

@@ -1,5 +1,6 @@
 package com.johannesbrodwall.events;
 
+import com.johannesbrodwall.events.category.EventsAppConfiguration;
 import com.johannesbrodwall.infrastructure.oauth.OauthProviderSession;
 
 import java.io.IOException;
