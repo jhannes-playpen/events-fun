@@ -25,7 +25,12 @@ public class ApplicationServer extends WebServer {
         flyway.setDataSource(database.getDataSource());
         flyway.migrate();
 
-        ApplicationServer server = new ApplicationServer(10080);
+        int port = 10080;
+        if (System.getenv("PORT") != null) {
+            port = Integer.parseInt(System.getenv("PORT"));
+        }
+
+        ApplicationServer server = new ApplicationServer(port);
         server.addHandler(server.shutdownHandler());
         server.addHandler(server.createWebAppContext("/events"));
         server.addHandler(server.createRedirectContextHandler("/", "/events"));
