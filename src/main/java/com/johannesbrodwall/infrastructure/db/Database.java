@@ -135,11 +135,11 @@ public class Database {
         }
     }
 
-    public static long queryForLong(String query) {
+    public static int queryForInt(String query) {
         try (Statement statement = getCurrentConnection().createStatement()){
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                return resultSet.getLong(1);
+                return resultSet.getInt(1);
             }
             throw new NotFoundException();
         } catch (SQLException e) {

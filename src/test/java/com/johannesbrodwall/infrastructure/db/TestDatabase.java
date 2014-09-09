@@ -31,6 +31,7 @@ public class TestDatabase {
 
         Flyway flyway = new Flyway();
         flyway.setDataSource(database.getDataSource());
+        flyway.clean();
         int number = flyway.migrate();
         log.info("Completed " + number + " migrations");
     }

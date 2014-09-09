@@ -8,11 +8,14 @@ import com.johannesbrodwall.infrastructure.SampleData;
 public class SampleEventData extends SampleData {
 
     public static EventCategory sampleCategory() {
-        return new EventCategory(randomWords(2), randomColor());
+        return new EventCategory(null, randomWords(2), randomColor());
     }
 
-    public static Event sampleEvent() {
-        return new Event(randomWords(3));
+    public static Event sampleEvent(EventCategory category) {
+        Event event = new Event(randomWords(3), category);
+        event.setStartDate(randomDate());
+        event.setEndDate(event.getStartDate().plusDays(randomInt(30)));
+        return event;
     }
 
 }

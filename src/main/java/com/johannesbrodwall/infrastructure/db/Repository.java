@@ -6,7 +6,7 @@ public interface Repository<T> {
 
     List<T> findAll();
 
-    long insert(T entity);
+    int insert(T entity);
 
     T fetch(long id);
 

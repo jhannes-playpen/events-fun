@@ -1,5 +1,6 @@
 package com.johannesbrodwall.infrastructure;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +28,14 @@ public class SampleData {
     @SafeVarargs
     private static <T> T random(T... alternatives) {
         return alternatives[random.nextInt(alternatives.length)];
+    }
+
+    protected static LocalDate randomDate() {
+        return LocalDate.of(2014, 1, 1).plusDays(randomInt(720));
+    }
+
+    protected static int randomInt(int max) {
+        return random.nextInt(max);
     }
 
 }

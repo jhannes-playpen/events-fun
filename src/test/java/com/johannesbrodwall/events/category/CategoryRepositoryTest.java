@@ -20,15 +20,13 @@ public class CategoryRepositoryTest {
     public void shouldRetrieveCategory() {
         EventCategory category = SampleEventData.sampleCategory();
 
-        long id;
-        try (Transaction tx = database.transaction()) {
-            id = repository.insert(category);
-            tx.setCommit();
-        }
+        int id = database.executeInTransaction(() -> repository.insert(category));
+        assertThat(category.getId()).isEqualTo(id);
 
-        try (Transaction tx = database.transaction()) {
-            assertThat(repository.fetch(id)).isEqualTo(category);
-        }
+        assertThat(database.executeInTransaction(() -> repository.fetch(id)))
+            .isEqualTo(category);
+        assertThat(database.executeInTransaction(() -> repository.fetch(category.getId())))
+            .isEqualTo(category);
     }
 
     @Test
@@ -60,8 +58,15 @@ public class CategoryRepositoryTest {
 
         try (Transaction tx = database.transaction()) {
             assertThat(repository.findAll())
-                .contains(EventCategory.fromJSON(category.toJSON()));
+                .contains(category);
         }
+    }
+
+    @Test
+    public void shouldDeserializeJSON() {
+        EventCategory category = SampleEventData.sampleCategory();
+        System.out.println(category.toJSON());
+        assertThat(category).isEqualTo(EventCategory.fromJSON(category.toJSON()));
     }
 
 }

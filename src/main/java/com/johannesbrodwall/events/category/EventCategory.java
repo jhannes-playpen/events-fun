@@ -13,9 +13,13 @@ import lombok.ToString;
 public class EventCategory implements JSONConvertible {
 
     @Getter
+    private Integer id;
+
+    @Getter
     private String displayName, color;
 
-    public EventCategory(String displayName, String color) {
+    public EventCategory(Integer id, String displayName, String color) {
+        this.id = id;
         this.displayName = displayName;
         this.color = color;
     }
@@ -23,12 +27,20 @@ public class EventCategory implements JSONConvertible {
     @Override
     public JSONObject toJSON() {
         return new JSONObject()
+            .put("id", id)
             .put("displayName", displayName)
             .put("color", color);
     }
 
     public static EventCategory fromJSON(JSONObject object) {
-        return new EventCategory(object.getString("displayName"), object.getString("color"));
+        return new EventCategory(
+                (Integer)object.opt("id"),
+                object.getString("displayName"),
+                object.getString("color"));
+    }
+
+    void setId(int id) {
+        this.id = id;
     }
 
 }
