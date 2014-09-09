@@ -21,13 +21,13 @@ public class TestDatabase {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
 
-        AppConfiguration properties = new AppConfiguration("events-test");
+        AppConfiguration configuration = new AppConfiguration("events-test");
+        configuration.setDefault("events.db.url", "jdbc:postgresql://localhost:5432/events_test");
+        configuration.setDefault("events.db.username", "events_test");
+        configuration.setDefault("events.db.password", "events_test");
+        configuration.setDefault("events.db.driverClassName", "org.postgresql.Driver");
 
-        database = new Database();
-        database.setUrl(properties.getProperty("database.url", "jdbc:postgresql://localhost:5432/events_test"));
-        database.setUsername(properties.getProperty("datasource.username", "events_test"));
-        database.setPassword(properties.getProperty("datasource.password", "events_test"));
-        database.setDriverClassName(properties.getProperty("database.driverClassName", "org.postgresql.Driver"));
+        database = new Database(configuration);
 
         Flyway flyway = new Flyway();
         flyway.setDataSource(database.getDataSource());

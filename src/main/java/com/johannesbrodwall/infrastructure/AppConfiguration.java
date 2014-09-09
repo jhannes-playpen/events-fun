@@ -14,10 +14,15 @@ public class AppConfiguration {
     private long nextCheckTime = 0;
     private long lastLoadTime = 0;
     private Properties properties = new Properties();
+    private Properties defaultProperties = new Properties();
     private final File configFile;
 
     public AppConfiguration(String filename) {
         this.configFile = new File(filename);
+    }
+
+    public void setDefault(String key, String value) {
+        defaultProperties.setProperty(key, value);
     }
 
     public String getProperty(String propertyName, String defaultValue) {
@@ -43,7 +48,7 @@ public class AppConfiguration {
         }
 
         ensureConfigurationIsFresh();
-        return properties.getProperty(propertyName);
+        return properties.getProperty(propertyName, defaultProperties.getProperty(propertyName));
     }
 
     private synchronized void ensureConfigurationIsFresh() {
@@ -65,7 +70,6 @@ public class AppConfiguration {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
 

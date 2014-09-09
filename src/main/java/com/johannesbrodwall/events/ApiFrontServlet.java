@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ApiController extends HttpServlet {
+public class ApiFrontServlet extends HttpServlet {
 
     private Database database = new Database(new AppConfiguration("events.properties"));
 

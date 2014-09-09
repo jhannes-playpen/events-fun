@@ -3,6 +3,7 @@ package com.johannesbrodwall.infrastructure.db;
 import com.johannesbrodwall.infrastructure.AppConfiguration;
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,16 +14,25 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import lombok.SneakyThrows;
+
 public class Database {
 
+    @SneakyThrows
     public Database(AppConfiguration configuration) {
-        setUrl(configuration.getRequiredProperty("events.db.url"));
-        setUsername(configuration.getRequiredProperty("events.db.username"));
-        setPassword(configuration.getRequiredProperty("events.db.password"));
-        setDriverClassName(configuration.getRequiredProperty("events.db.driverClassName"));
-    }
-
-    public Database() {
+        String databaseUrl = System.getenv("DATABASE_URL");
+        if (databaseUrl != null) {
+            URI dbUri = new URI(databaseUrl);
+            setUsername(dbUri.getUserInfo().split(":")[0]);
+            setPassword(dbUri.getUserInfo().split(":")[1]);
+            setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath());
+            setDriverClassName("org.postgresql.Driver");
+        } else {
+            setUrl(configuration.getRequiredProperty("events.db.url"));
+            setUsername(configuration.getRequiredProperty("events.db.username"));
+            setPassword(configuration.getRequiredProperty("events.db.password"));
+            setDriverClassName(configuration.getRequiredProperty("events.db.driverClassName"));
+        }
     }
 
     private static class DbTransaction implements Transaction {
