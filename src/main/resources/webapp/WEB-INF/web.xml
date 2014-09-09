@@ -8,7 +8,7 @@
 
   <servlet>
     <servlet-name>apiController</servlet-name>
-    <servlet-class>com.johannesbrodwall.events.ApiController</servlet-class>
+    <servlet-class>com.johannesbrodwall.events.ApiFrontServlet</servlet-class>
   </servlet>
 
   <servlet>
