@@ -1,25 +1,18 @@
-package com.johannesbrodwall.events;
-
-import com.johannesbrodwall.events.category.EventCategory;
+package com.johannesbrodwall.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
 public class SampleData {
 
     private static Random random = new Random();
 
-    public static EventCategory sampleCategory() {
-        return new EventCategory(randomWords(2), randomColor());
-    }
-
-    private static String randomColor() {
+    protected static String randomColor() {
         return random("red", "green", "blue", "yellow", "purple");
     }
 
-    private static String randomWords(int count) {
+    protected static String randomWords(int count) {
         List<String> words = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             words.add(randomWord());
@@ -27,7 +20,7 @@ public class SampleData {
         return String.join(" ", words);
     }
 
-    private static String randomWord() {
+    protected static String randomWord() {
         return random("foo", "bar", "bar", "qux", "lorum", "ipsum", "the", "dalum");
     }
 

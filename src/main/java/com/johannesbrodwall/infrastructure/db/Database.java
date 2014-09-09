@@ -147,5 +147,13 @@ public class Database {
         }
     }
 
+    public <T> T executeInTransaction(Action<T> object) {
+        try (Transaction tx = transaction()) {
+            T result = object.execute();
+            tx.setCommit();
+            return result;
+        }
+    }
+
 
 }

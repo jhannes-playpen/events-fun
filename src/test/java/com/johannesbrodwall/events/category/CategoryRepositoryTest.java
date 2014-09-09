@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 import org.junit.Test;
 
-import com.johannesbrodwall.events.SampleData;
+import com.johannesbrodwall.events.SampleEventData;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.NotFoundException;
 import com.johannesbrodwall.infrastructure.db.TestDatabase;
@@ -18,7 +18,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldRetrieveCategory() {
-        EventCategory category = SampleData.sampleCategory();
+        EventCategory category = SampleEventData.sampleCategory();
 
         long id;
         try (Transaction tx = database.transaction()) {
@@ -33,7 +33,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldNotWriteOnRollback() {
-        EventCategory category = SampleData.sampleCategory();
+        EventCategory category = SampleEventData.sampleCategory();
 
         long id;
         try (Transaction tx = database.transaction()) {
@@ -51,7 +51,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldFindCategories() throws Exception {
-        EventCategory category = SampleData.sampleCategory();
+        EventCategory category = SampleEventData.sampleCategory();
 
         try (Transaction tx = database.transaction()) {
             repository.insert(category);
