@@ -38,10 +38,10 @@ public class CalendarController implements GetController {
         LocalDate endDate = startDate.plusDays(30);
         List<Event> events = repository.findAll();
         HolidayCalendar holidays = new HolidayCalendar(new URL("http://www.officeholidays.com/ics/ics_country.php?tbl_country=Norway"));
-        return getJSON(startDate, endDate, events, holidays.getHolidays());
+        return getJSON(events, startDate, endDate, holidays.getHolidays());
     }
 
-    public JSONObject getJSON(LocalDate startDate, LocalDate endDate, List<Event> events, Map<LocalDate, String> holidays) {
+    public JSONObject getJSON(List<Event> events, LocalDate startDate, LocalDate endDate, Map<LocalDate, String> holidays) {
         JSONArray jsonEvents = new JSONArray();
         for (Event event : events) {
             jsonEvents.put(getJSON(event, startDate, endDate, holidays));
@@ -52,7 +52,13 @@ public class CalendarController implements GetController {
             .put("endDate", endDate);
     }
 
-    private JSONObject getJSON(Event event, LocalDate startDate, LocalDate endDate, Map<LocalDate, String> holidays) {
+    JSONObject getJSON(Event event, LocalDate startDate, LocalDate endDate, Map<LocalDate, String> holidays) {
+        return new JSONObject()
+            .put("displayName", event.getDisplayName())
+            .put("calendar", getJSONCalendar(event, startDate, endDate, holidays));
+    }
+
+    JSONArray getJSONCalendar(Event event, LocalDate startDate, LocalDate endDate, Map<LocalDate, String> holidays) {
         JSONArray calendar = new JSONArray();
         LocalDate date = startDate;
         while ( date.isBefore(endDate) ) {
@@ -71,9 +77,7 @@ public class CalendarController implements GetController {
             }
             date = date.plusDays(1);
         }
-        return new JSONObject()
-            .put("displayName", event.getDisplayName())
-            .put("calendar", calendar);
+        return calendar;
     }
 
     private boolean isWithinEvent(Event event, LocalDate date) {

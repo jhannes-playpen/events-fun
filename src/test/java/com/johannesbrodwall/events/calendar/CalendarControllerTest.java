@@ -32,7 +32,7 @@ public class CalendarControllerTest {
             events.add(SampleEventData.sampleEvent(SampleEventData.sampleCategory(), startDate));
         }
 
-        JSONObject json = calendarController.getJSON(startDate, endDate, events, holidays);
+        JSONObject json = calendarController.getJSON(events, startDate, endDate, holidays);
 
         assertThat(json.getJSONArray("events").getJSONObject(0).getString("displayName"))
             .isEqualTo(events.get(0).getDisplayName());
@@ -43,27 +43,21 @@ public class CalendarControllerTest {
     @Test
     public void itIncludesAllDays() {
         int duration = SampleData.randomInt(10) + 10;
-        List<Event> events = new ArrayList<Event>();
-        events.add(SampleEventData.sampleEvent(SampleEventData.sampleCategory()));
+        Event event = SampleEventData.sampleEvent(SampleEventData.sampleCategory());
 
-        JSONObject json = calendarController.getJSON(startDate, startDate.plusDays(duration), events, holidays)
-                .getJSONArray("events").getJSONObject(0);
+        JSONObject json = calendarController.getJSON(event, startDate, startDate.plusDays(duration), holidays);
 
-        int includedDays = json.getJSONArray("calendar").length();
-        assertThat(includedDays).isEqualTo(duration);
+        assertThat(json.getJSONArray("calendar").length()).isEqualTo(duration);
     }
 
     @Test
     public void itDisplaysWeekends() {
         LocalDate startDate = LocalDate.of(2014, 9, 12);
         LocalDate endDate = LocalDate.of(2014, 9, 16);
-        List<Event> events = new ArrayList<Event>();
-        events.add(SampleEventData.sampleEvent(SampleEventData.sampleCategory()));
+        Event event = SampleEventData.sampleEvent(SampleEventData.sampleCategory());
 
-        JSONObject json = calendarController.getJSON(startDate, endDate, events, holidays)
-                .getJSONArray("events").getJSONObject(0);
+        JSONArray calendar = calendarController.getJSONCalendar(event, startDate, endDate, holidays);
 
-        JSONArray calendar = json.getJSONArray("calendar");
         assertThat(calendar.getJSONObject(0).optString("color")).isNullOrEmpty();
         assertThat(calendar.getJSONObject(1).getString("color")).isEqualTo("gray");
         assertThat(calendar.getJSONObject(2).getString("color")).isEqualTo("gray");
@@ -78,13 +72,8 @@ public class CalendarControllerTest {
         event.setStartDate(LocalDate.of(2014, 9, 10));
         event.setEndDate(LocalDate.of(2014, 9, 12));
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(event);
-        JSONObject json = calendarController.getJSON(startDate, endDate, events, holidays)
-                .getJSONArray("events").getJSONObject(0);
-        JSONArray calendar = json.getJSONArray("calendar");
+        JSONArray calendar = calendarController.getJSONCalendar(event, startDate, endDate, holidays);
 
-        //assertThat(calendar.getJSONObject(1).optInt("days", 1)).isEqualTo(2);
         assertThat(calendar.getJSONObject(1).getString("color")).isEqualTo(category.getColor());
         assertThat(calendar.getJSONObject(2).getString("color")).isEqualTo(category.getColor());
     }
@@ -99,11 +88,7 @@ public class CalendarControllerTest {
 
         holidays.put(LocalDate.of(2014, 9, 11), "BankID day");
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(event);
-        JSONObject json = calendarController.getJSON(startDate, endDate, events, holidays)
-                .getJSONArray("events").getJSONObject(0);
-        JSONArray calendar = json.getJSONArray("calendar");
+        JSONArray calendar = calendarController.getJSONCalendar(event, startDate, endDate, holidays);
 
         assertThat(calendar.getJSONObject(2).getString("color")).isEqualTo("purple");
         assertThat(calendar.getJSONObject(2).getString("title")).isEqualTo("BankID day");
