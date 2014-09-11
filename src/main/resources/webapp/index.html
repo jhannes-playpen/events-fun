@@ -67,6 +67,11 @@
 
   <div class="container" id="container">
 
+    <div class="alert alert-info">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Note!</strong> Loading your data.
+    </div>
+
     <div>
       <p>
       <img src="images/ajax-loader.gif" alt="Please wait" />
@@ -85,50 +90,51 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script>
-  $(function() {
+$(function() {
 	  
-toastr.options = {
-    toastClass: 'alert',
-    iconClasses: {
-        error: 'alert-error',
-        info: 'alert-info',
-        success: 'alert-success',
-        warning: 'alert-warning'
-    }
-};
-$.ajaxSetup({
-	statusCode: {
-		401: function(err) {
-			window.location.replace("auth");
-		}
-	}
-});
-$(document).ajaxStop(function() {
-	$(".hideOnLoad").removeClass("loading");
-	$(".displayOnLoad").addClass("notLoading");
-});
-$(document).ajaxError(function(event, jqxhr, settings, error) {
-	toastr.warning(error);
-});
-
-$.getJSON("api/frontPage", function(data) {
-	$("#username").text(data.username);
-});
-
-$(window).bind('hashchange', function() {
-	if (window.location.hash === "#categories") {
-		$.get("categories.html").then(function(data) {
-			$("#container").html(data);
-		});
-	}
-	if (window.location.hash === "#projects") {
-		$.get("projects.html").then(function(data) {
-			$("#container").html(data);
-		});
-	}
-}).trigger('hashchange');
+  toastr.options = {
+      toastClass: 'alert',
+      iconClasses: {
+          error: 'alert-error',
+          info: 'alert-info',
+          success: 'alert-success',
+          warning: 'alert-warning'
+      }
+  };
+  $.ajaxSetup({
+  	statusCode: {
+  		401: function(err) {
+  			window.location.replace("auth");
+  		}
+  	}
   });
-	
+  $(document).ajaxStop(function() {
+  	$(".hideOnLoad").removeClass("loading");
+  	$(".displayOnLoad").addClass("notLoading");
+  });
+  $(document).ajaxError(function(event, jqxhr, settings, error) {
+	  console.log(error);
+  	toastr.warning(error);
+  });
+  
+  $.getJSON("api/frontPage", function(data) {
+  	$("#username").text(data.username);
+  });
+  
+  var destinations = {
+  	'#categories': 'categories.html',	
+  	'#projects': 'projects.html',	
+  	'#calendar': 'calendar.html',	
+  };
+  
+  $(window).bind('hashchange', function() {
+  	if (destinations[window.location.hash]) {
+  		$.get(destinations[window.location.hash]).then(function(data) {
+  			$("#container").html(data);
+  		});
+  	}
+  }).trigger('hashchange');
+});	
   </script>
 </body>
 </html>

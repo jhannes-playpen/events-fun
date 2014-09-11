@@ -5,6 +5,8 @@ import com.johannesbrodwall.events.event.Event;
 import com.johannesbrodwall.events.project.Project;
 import com.johannesbrodwall.infrastructure.SampleData;
 
+import java.time.LocalDate;
+
 
 public class SampleEventData extends SampleData {
 
@@ -28,5 +30,13 @@ public class SampleEventData extends SampleData {
         project.setParent(parent);
         return project;
     }
+
+    public static Event sampleEvent(EventCategory category, LocalDate targetDate) {
+        Event event = new Event(randomWords(3), category);
+        event.setStartDate(randomDate(targetDate));
+        event.setEndDate(event.getStartDate().plusDays(randomInt(15)));
+        return event;
+    }
+
 
 }

@@ -30,11 +30,16 @@ public class SampleData {
         return alternatives[random.nextInt(alternatives.length)];
     }
 
-    protected static LocalDate randomDate() {
+    public static LocalDate randomDate() {
         return LocalDate.of(2014, 1, 1).plusDays(randomInt(720));
     }
 
-    protected static int randomInt(int max) {
+    protected static LocalDate randomDate(LocalDate targetDate) {
+        return targetDate.minusDays(5).plusDays(randomInt(15));
+    }
+
+
+    public static int randomInt(int max) {
         return random.nextInt(max);
     }
 

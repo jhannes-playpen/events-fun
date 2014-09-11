@@ -26,3 +26,12 @@ body {
 
 .displayOnLoad.notLoading { display: none; }
 .hideOnLoad.loading { display: none; }
+
+.calendar td {
+	min-width: 20px;
+	padding-right: 3px;
+}
+
+.calendar thead td {
+	text-align: center;
+}

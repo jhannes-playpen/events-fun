@@ -1,0 +1,94 @@
+<h2>Event calendar</h2>
+
+
+<table id="calendar2" class="calendar">
+	<thead>
+		<tr>
+			<td>Top level</td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>8</td>
+			<td>9</td>
+			<td>10</td>
+			<td>11</td>
+			<td>12</td>
+			<td>13</td>
+			<td>14</td>
+			<td>15</td>
+		</tr>
+		<tr>
+			<td>Top level</td>
+			<td>mo</td>
+			<td>tu</td>
+			<td>we</td>
+			<td>th</td>
+			<td>fr</td>
+			<td>sa</td>
+			<td>su</td>
+			<td>mo</td>
+			<td>tu</td>
+			<td>we</td>
+			<td>th</td>
+			<td>fr</td>
+			<td>sa</td>
+			<td>su</td>
+		</tr>
+	</thead>
+</table>
+
+<script>
+var weekdays = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+
+var renderCalendar =function(calendar) {
+	var thead = $("<thead>");
+	var date = new Date(calendar.startDate);
+	var endDate = new Date(calendar.endDate);
+	
+	var tr1 = $("<tr>");
+	tr1.append($("<td>"));
+	var tr2 = $("<tr>");
+	tr2.append($("<td>"));
+	
+	for (; date<endDate; date.setDate(date.getDate()+1)) {
+		tr1.append($("<td>" + date.getDate() + "</td>"));
+		tr2.append($("<td>" + weekdays[date.getDay()] + "</td>"));
+	}
+	thead.append(tr1);
+	thead.append(tr2);
+	
+	$("#calendar2 thead").remove();
+	$("#calendar2").append(thead);
+	
+	
+	
+	var tbody = $("<tbody>");
+
+	for (var i = 0; i < calendar.events.length; i++) {
+		var event = calendar.events[i];
+		var tr = $("<tr>");
+		tr.append("<td>" + event.displayName + "</td>");
+
+		for (var j = 0; j < event.calendar.length; j++) {
+			var td = $("<td>");
+			var eventdays = event.calendar[j];
+			td.attr("colspan", eventdays.days || 1);
+			td.attr("title", eventdays.title || "");
+			td.attr("bgcolor", eventdays.color || "");
+			tr.append(td);
+		};
+
+		tbody.append(tr);
+	};
+
+	$("#calendar2").append(tbody);
+}
+
+$.getJSON("api/calendar", function(calendar) {
+	renderCalendar(calendar);	
+});
+</script>

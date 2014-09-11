@@ -9,12 +9,15 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HolidayCalendar {
 
     private List<CalendarEvent> events = new ArrayList<CalendarEvent>();
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private HashMap<LocalDate, String> holidays = new HashMap<LocalDate, String>();
 
     public HolidayCalendar(URL url) throws IOException {
         try (InputStream in = url.openStream(); Reader reader = new InputStreamReader(in)) {
@@ -35,6 +38,7 @@ public class HolidayCalendar {
                     currentEvent.setSummary(line.substring("SUMMARY;LANGUAGE=en-us:Norway: ".length()).trim());
                 } else if (line.equals("END:VEVENT")) {
                     events.add(currentEvent);
+                    holidays.put(currentEvent.getDate(), currentEvent.getSummary());
                     currentEvent = null;
                 }
             }
@@ -48,6 +52,10 @@ public class HolidayCalendar {
 
     public List<CalendarEvent> getEvents() {
         return events;
+    }
+
+    public Map<LocalDate, String> getHolidays() {
+        return holidays;
     }
 
 }

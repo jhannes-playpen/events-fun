@@ -29,6 +29,7 @@ public class CalendarTest {
         HolidayCalendar holidays = new HolidayCalendar(new URL("http://www.officeholidays.com/ics/ics_country.php?tbl_country=Norway"));
 
         assertThat(holidays.get(LocalDate.of(2014, 5, 17))).isEqualTo("Constitution Day");
+        assertThat(holidays.getHolidays().get(LocalDate.of(2014, 5, 17))).isEqualTo("Constitution Day");
     }
 
 

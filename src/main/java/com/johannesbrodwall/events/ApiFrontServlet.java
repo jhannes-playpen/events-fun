@@ -1,5 +1,6 @@
 package com.johannesbrodwall.events;
 
+import com.johannesbrodwall.events.calendar.CalendarController;
 import com.johannesbrodwall.events.category.CategoryController;
 import com.johannesbrodwall.events.project.ProjectController;
 import com.johannesbrodwall.infrastructure.AppConfiguration;
@@ -70,6 +71,7 @@ public class ApiFrontServlet extends HttpServlet {
         Map<String, GetController> controllers = new HashMap<>();
 
         controllers.put("/frontPage", new FrontPageController());
+        controllers.put("/calendar", new CalendarController());
         controllers.put("/categories", new CategoryController());
         controllers.put("/projects", new ProjectController());
 
