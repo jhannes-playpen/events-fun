@@ -1,7 +1,6 @@
 package com.johannesbrodwall.events;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import net.fortuna.ical4j.data.ParserException;
 
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public class CalendarTest {
 
     @Test
-    public void shouldParseICalFeed() throws IOException, ParserException {
+    public void shouldParseICalFeed() throws IOException {
         HolidayCalendar holidays = new HolidayCalendar(new URL("file:src/test/resources/ics_2014_norway.ics"));
 
         List<CalendarEvent> events = holidays.getEvents();
