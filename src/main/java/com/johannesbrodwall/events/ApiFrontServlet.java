@@ -1,6 +1,7 @@
 package com.johannesbrodwall.events;
 
 import com.johannesbrodwall.events.category.CategoryController;
+import com.johannesbrodwall.events.project.ProjectController;
 import com.johannesbrodwall.infrastructure.AppConfiguration;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.Transaction;
@@ -70,6 +71,7 @@ public class ApiFrontServlet extends HttpServlet {
 
         controllers.put("/frontPage", new FrontPageController());
         controllers.put("/categories", new CategoryController());
+        controllers.put("/projects", new ProjectController());
 
         return controllers;
     }
@@ -79,6 +81,7 @@ public class ApiFrontServlet extends HttpServlet {
         Map<String, PostController> controllers = new HashMap<>();
 
         controllers.put("/categories", new CategoryController());
+        controllers.put("/projects", new ProjectController());
 
         return controllers;
     }

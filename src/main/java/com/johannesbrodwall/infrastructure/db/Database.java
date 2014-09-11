@@ -74,6 +74,9 @@ public class Database {
     private static ThreadLocal<Connection> currentConnection = new ThreadLocal<Connection>();
 
     private static Connection getCurrentConnection() {
+        if (currentConnection.get() == null) {
+            throw new IllegalStateException("Start a transaction first!");
+        }
         return currentConnection.get();
     }
 
@@ -111,6 +114,23 @@ public class Database {
         }
     }
 
+    public static <T> List<T> executeQuery(String query, StatementPreparer preparer, ResultSetTransformer<T> transformer) {
+        try (PreparedStatement statement = getCurrentConnection().prepareStatement(query)) {
+            preparer.prepare(statement);
+
+            try(ResultSet rs = statement.executeQuery()) {
+                ArrayList<T> result = new ArrayList<T>();
+                while (rs.next()) {
+                    result.add(transformer.apply(rs));
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public static void executeInsert(String query, StatementPreparer preparer) {
         try (PreparedStatement statement = getCurrentConnection().prepareStatement(query)) {
             preparer.prepare(statement);
@@ -135,6 +155,13 @@ public class Database {
         }
     }
 
+    public static <T> T executeFetchByKey(String query, Integer id, ResultSetTransformer<T> transformer) {
+        if (id == null) {
+            throw new IllegalArgumentException("Can't execute query on null id: " + query);
+        }
+        return executePreparedQuery(query, (stmt) -> stmt.setInt(1, id), transformer);
+    }
+
     public static int queryForInt(String query) {
         try (Statement statement = getCurrentConnection().createStatement()){
             ResultSet resultSet = statement.executeQuery(query);
@@ -147,11 +174,18 @@ public class Database {
         }
     }
 
-    public <T> T executeInTransaction(Action<T> object) {
+    public <T> T executeInTransaction(Action<T> command) {
         try (Transaction tx = transaction()) {
-            T result = object.execute();
+            T result = command.execute();
             tx.setCommit();
             return result;
+        }
+    }
+
+    public void executeInTransaction(VoidAction command) {
+        try (Transaction tx = transaction()) {
+            command.execute();
+            tx.setCommit();
         }
     }
 

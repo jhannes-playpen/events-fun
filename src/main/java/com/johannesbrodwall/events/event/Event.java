@@ -13,14 +13,14 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Event {
 
-    @Getter
-    private Long id;
+    @Getter @Setter
+    private Integer id;
 
     @Getter
-    private String displayName;
+    private final String displayName;
 
     @Getter
-    private EventCategory category;
+    private final EventCategory category;
 
     @Getter @Setter
     private LocalDate startDate, endDate;

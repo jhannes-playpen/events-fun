@@ -23,7 +23,7 @@ public class EventRepository implements Repository<Event> {
     }
 
     @Override
-    public int insert(Event event) {
+    public void insert(Event event) {
         String query = "insert into events (displayName, category_id, start_date, end_date) values (?, ?, ?, ?)";
         Database.executeInsert(query, (PreparedStatement stmt) -> {
             stmt.setString(1, event.getDisplayName());
@@ -31,11 +31,11 @@ public class EventRepository implements Repository<Event> {
             stmt.setDate(3, Date.valueOf(event.getStartDate()));
             stmt.setDate(4, Date.valueOf(event.getEndDate()));
         });
-        return Database.queryForInt("SELECT last_value FROM events_id_seq");
+        event.setId(Database.queryForInt("SELECT last_value FROM events_id_seq"));
     }
 
     @Override
-    public Event fetch(long id) {
+    public Event fetch(Integer id) {
         Map<Integer, EventCategory> categories = new HashMap<>();
         categoryRepository.findAll().stream().forEach((c) -> categories.put(c.getId(), c));
 
@@ -44,6 +44,7 @@ public class EventRepository implements Repository<Event> {
             stmt.setLong(1, id);
         }, (ResultSet rs) -> {
             Event event = new Event(rs.getString("displayName"), categories.get(rs.getInt("category_id")));
+            event.setId(rs.getInt("id"));
             event.setStartDate(rs.getDate("start_date").toLocalDate());
             event.setEndDate(rs.getDate("end_date").toLocalDate());
             return event;

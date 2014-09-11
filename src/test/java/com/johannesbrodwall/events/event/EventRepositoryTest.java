@@ -29,7 +29,6 @@ public class EventRepositoryTest {
         database.executeInTransaction(() -> {
             categoryRepo.insert(category1);
             categoryRepo.insert(category2);
-            return null;
         });
     }
 
@@ -37,9 +36,8 @@ public class EventRepositoryTest {
     @Test
     public void shouldSaveEvents() {
         Event event = SampleEventData.sampleEvent(category1);
-
-        int id = database.executeInTransaction(() -> repository.insert(event));
-        assertThat(database.executeInTransaction(() -> repository.fetch(id)))
+        database.executeInTransaction(() -> repository.insert(event));
+        assertThat(database.executeInTransaction(() -> repository.fetch(event.getId())))
             .isEqualTo(event);
     }
 

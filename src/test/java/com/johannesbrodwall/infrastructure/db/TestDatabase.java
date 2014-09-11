@@ -10,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestDatabase {
 
+    private TestDatabase() {
+    }
+
     private static Database database;
 
     public synchronized static Database getInstance() {

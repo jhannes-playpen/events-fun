@@ -1,0 +1,74 @@
+<h1>Projects</h1>
+
+
+<h2>Create new</h2>
+<div id="newProject" class="hideOnLoad">
+  <form id="createProjectForm">
+    <input type="text" name="displayName" id="projectDisplayName" placeholder="Project name" />
+    <select name="parent" id="projectParent"></select>
+    <button>Save</button>
+  </form>
+</div>
+<div id="newProjectSpinner" class="displayOnLoad notLoading">
+      <p>
+      <img src="images/ajax-loader.gif" alt="Please wait" />
+      </p>
+</div>
+
+<h2>Existing</h2>
+
+<table id="projects">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Parent</th>
+    </tr>
+  </thead>
+</table>
+
+<script id="projectRowTemplate" type="text/html">
+<tr>
+	<td><%= displayName %></td>
+	<td><%= parentName %></td>
+</tr>
+</script>
+
+<script>
+$("#createProjectForm").on('submit', function(e) {
+	e.preventDefault();
+	
+	$("#newProject").addClass("loading");
+	$("#newProjectSpinner").removeClass("notLoading");
+	var newProject = {
+		displayName: $("#projectDisplayName").val(), 
+		parent: $("#projectParent").val() 
+	};
+	$.post("api/projects", JSON.stringify(newProject),  function() {
+		$("#createProjectForm").trigger('reset');
+		getProjects();
+	});
+});
+
+function getProjects() {
+  $.get("api/projects", function(data) {
+  	var rowTemplate = _.template($("#projectRowTemplate").html());
+  	
+  	var tbody = $("<tbody>");
+  	for (var i=0; i<data.projects.length; i++) {
+  		tbody.append(rowTemplate(data.projects[i]));
+  	}  	
+  	$("#projects tbody").remove();
+  	$("#projects").append(tbody);
+  	
+  	$("#projectParent option").remove();
+  	$("#projectParent").append($("<option value='-1'>(Top level)</option>"));
+  	for (var i=0; i<data.projects.length; i++) {
+  	  	var option = $("<option>").attr("value", data.projects[i].id).text(data.projects[i].displayName);
+  	  	$("#projectParent").append(option);
+  	}  	
+  	
+  });
+}
+
+getProjects();
+</script>

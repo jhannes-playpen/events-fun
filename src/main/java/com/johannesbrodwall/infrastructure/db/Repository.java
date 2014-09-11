@@ -6,8 +6,8 @@ public interface Repository<T> {
 
     List<T> findAll();
 
-    int insert(T entity);
+    void insert(T entity);
 
-    T fetch(long id);
+    T fetch(Integer id);
 
 }

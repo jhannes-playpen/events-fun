@@ -20,11 +20,8 @@ public class CategoryRepositoryTest {
     public void shouldRetrieveCategory() {
         EventCategory category = SampleEventData.sampleCategory();
 
-        int id = database.executeInTransaction(() -> repository.insert(category));
-        assertThat(category.getId()).isEqualTo(id);
+        database.executeInTransaction(() -> repository.insert(category));
 
-        assertThat(database.executeInTransaction(() -> repository.fetch(id)))
-            .isEqualTo(category);
         assertThat(database.executeInTransaction(() -> repository.fetch(category.getId())))
             .isEqualTo(category);
     }
@@ -33,13 +30,12 @@ public class CategoryRepositoryTest {
     public void shouldNotWriteOnRollback() {
         EventCategory category = SampleEventData.sampleCategory();
 
-        long id;
         try (Transaction tx = database.transaction()) {
-            id = repository.insert(category);
+            repository.insert(category);
         }
 
         try (Transaction tx = database.transaction()) {
-            repository.fetch(id);
+            repository.fetch(category.getId());
             fail("Expected rolled back transaction not to be present");
         } catch (NotFoundException expected) {
 

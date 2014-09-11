@@ -18,19 +18,17 @@ public class CategoryRepository implements Repository<EventCategory> {
     }
 
     @Override
-    public int insert(EventCategory category) {
+    public void insert(EventCategory category) {
         String query = "insert into event_categories (displayName, color) values (?, ?)";
         Database.executeInsert(query, (PreparedStatement stmt) -> {
             stmt.setString(1, category.getDisplayName());
             stmt.setString(2, category.getColor());
         });
-        int id = Database.queryForInt("SELECT last_value FROM event_categories_id_seq");
-        category.setId(id);
-        return id;
+        category.setId(Database.queryForInt("SELECT last_value FROM event_categories_id_seq"));
     }
 
     @Override
-    public EventCategory fetch(long id) {
+    public EventCategory fetch(Integer id) {
         String query = "select * from event_categories where id = ?";
         return Database.executePreparedQuery(query,
                 (PreparedStatement stmt) -> {
