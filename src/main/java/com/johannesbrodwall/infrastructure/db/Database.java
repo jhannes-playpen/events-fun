@@ -50,8 +50,9 @@ public class Database {
                 connection.close();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            } finally {
+                currentConnection.set(null);
             }
-            currentConnection.set(null);
         }
 
         @Override
