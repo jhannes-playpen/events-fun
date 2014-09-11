@@ -1,0 +1,82 @@
+<h1>events</h1>
+
+
+<h2>Create new</h2>
+<div id="newEvent" class="hideOnLoad">
+  <form id="createEventForm">
+    <input type="text" name="displayName" id="eventDisplayName" placeholder="event name" />
+    <input type="date" name="startDate" id="eventStartDate" placeholder="start date" />
+    <input type="date" name="endDate" id="eventEndDate" placeholder="end date" />
+    <select name="category" id="eventCategory"></select>
+    <button>Save</button>
+  </form>
+</div>
+<div id="newEventSpinner" class="displayOnLoad notLoading">
+      <p>
+      <img src="images/ajax-loader.gif" alt="Please wait" />
+      </p>
+</div>
+
+<h2>Existing</h2>
+
+<table id="events">
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+</table>
+
+<script id="eventRowTemplate" type="text/html">
+<tr>
+	<td><%= displayName %></td>
+	<td><%= startDate %></td>
+	<td><%= endDate %></td>
+	<td><%= category.displayName %></td>
+</tr>
+</script>
+
+<script>
+$("#createEventForm").on('submit', function(e) {
+	e.preventDefault();
+	
+	$("#newEvent").addClass("loading");
+	$("#newEventSpinner").removeClass("notLoading");
+	var newEvent = {
+			displayName: $("#eventDisplayName").val(), 
+			startDate: new Date($("#eventStartDate").val()), 
+			endDate: new Date($("#eventEndDate").val()), 
+			categoryId: $("#eventCategory").val()
+	};
+	$.post("api/events", JSON.stringify(newEvent),  function() {
+		console.log("complete");
+		$("#createEventForm").trigger('reset');
+		getEvents();
+	});
+});
+
+function getEvents() {
+  $.get("api/events", function(data) {
+  	var rowTemplate = _.template($("#eventRowTemplate").html());
+  	
+  	var tbody = $("<tbody>");
+  	for (var i=0; i<data.events.length; i++) {
+  		tbody.append(rowTemplate(data.events[i]));
+  	}  	
+  	$("#events tbody").remove();
+  	$("#events").append(tbody);  	
+  });
+}
+
+$.get("api/categories", function(data) {
+  	$("#eventCategory option").remove();
+  	for (var i=0; i<data.categories.length; i++) {
+  	  	var option = $("<option>").attr("value", data.categories[i].id).text(data.categories[i].displayName);
+  	  	$("#eventCategory").append(option);
+  	}  	
+});
+getEvents();
+</script>

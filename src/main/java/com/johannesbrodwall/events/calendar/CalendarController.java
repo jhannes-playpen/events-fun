@@ -4,8 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.johannesbrodwall.events.HolidayCalendar;
-import com.johannesbrodwall.events.SampleEventData;
 import com.johannesbrodwall.events.event.Event;
+import com.johannesbrodwall.events.event.EventRepository;
 import com.johannesbrodwall.infrastructure.web.GetController;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.io.Writer;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,13 +31,12 @@ public class CalendarController implements GetController {
         }
     }
 
+    private EventRepository repository = new EventRepository();
+
     protected JSONObject getJSON(HttpServletRequest req) throws IOException {
         LocalDate startDate = LocalDate.of(2014, 4, 28);
-        LocalDate endDate = startDate.plusDays(20);
-        List<Event> events = new ArrayList<Event>();
-        for (int i = 0; i < 12; i++) {
-            events.add(SampleEventData.sampleEvent(SampleEventData.sampleCategory(), startDate));
-        }
+        LocalDate endDate = startDate.plusDays(30);
+        List<Event> events = repository.findAll();
         HolidayCalendar holidays = new HolidayCalendar(new URL("http://www.officeholidays.com/ics/ics_country.php?tbl_country=Norway"));
         return getJSON(startDate, endDate, events, holidays.getHolidays());
     }

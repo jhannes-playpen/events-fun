@@ -2,6 +2,7 @@ package com.johannesbrodwall.events;
 
 import com.johannesbrodwall.events.calendar.CalendarController;
 import com.johannesbrodwall.events.category.CategoryController;
+import com.johannesbrodwall.events.event.EventController;
 import com.johannesbrodwall.events.project.ProjectController;
 import com.johannesbrodwall.infrastructure.AppConfiguration;
 import com.johannesbrodwall.infrastructure.db.Database;
@@ -62,7 +63,7 @@ public class ApiFrontServlet extends HttpServlet {
         if (controller != null) {
             controller.doPost(req, resp);
         } else {
-            super.doGet(req, resp);
+            super.doPost(req, resp);
         }
     }
 
@@ -74,6 +75,7 @@ public class ApiFrontServlet extends HttpServlet {
         controllers.put("/calendar", new CalendarController());
         controllers.put("/categories", new CategoryController());
         controllers.put("/projects", new ProjectController());
+        controllers.put("/events", new EventController());
 
         return controllers;
     }
@@ -84,6 +86,7 @@ public class ApiFrontServlet extends HttpServlet {
 
         controllers.put("/categories", new CategoryController());
         controllers.put("/projects", new ProjectController());
+        controllers.put("/events", new EventController());
 
         return controllers;
     }

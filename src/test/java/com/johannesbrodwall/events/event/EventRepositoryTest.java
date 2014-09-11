@@ -11,9 +11,6 @@ import com.johannesbrodwall.events.category.EventCategory;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.TestDatabase;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 public class EventRepositoryTest {
 
     private Database database = TestDatabase.getInstance();
@@ -39,11 +36,10 @@ public class EventRepositoryTest {
         database.executeInTransaction(() -> repository.insert(event));
         assertThat(database.executeInTransaction(() -> repository.fetch(event.getId())))
             .isEqualTo(event);
-    }
 
-    public static void main(String[] args) {
-        LocalDate date = LocalDate.of(2013, 1, 1);
-        System.out.println(Date.valueOf(date));
+        assertThat(database.executeInTransaction(() -> repository.findAll()))
+            .contains(event);
+
     }
 
 }

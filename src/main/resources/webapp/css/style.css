@@ -1,6 +1,11 @@
+table td {
+	padding-right: 10px;
+}
+
 body {
   padding-top: 50px;
 }
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
@@ -29,7 +34,7 @@ body {
 
 .calendar td {
 	min-width: 20px;
-	padding-right: 3px;
+	padding-right: 5px;
 }
 
 .calendar thead td {

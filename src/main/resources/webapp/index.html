@@ -44,7 +44,6 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>
           <li><a href="#categories">Categories</a></li>
-          <li><a href="#projects">Projects</a></li>
           <li><a href="#events">Events</a></li>
           <li><a href="#calendar">Calendar</a></li>
         </ul>
@@ -124,11 +123,14 @@ $(function() {
   var destinations = {
   	'#categories': 'categories.html',	
   	'#projects': 'projects.html',	
-  	'#calendar': 'calendar.html',	
+  	'#events': 'events.html',	
+  	'#calendar': 'calendar.html'
   };
   
   $(window).bind('hashchange', function() {
   	if (destinations[window.location.hash]) {
+  		$("ul.nav li").removeClass("active");
+  		$("a[href='" + window.location.hash + "']").closest("li").addClass("active");
   		$.get(destinations[window.location.hash]).then(function(data) {
   			$("#container").html(data);
   		});
