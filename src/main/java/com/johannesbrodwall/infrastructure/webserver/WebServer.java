@@ -31,7 +31,7 @@ public class WebServer {
         server.start();
     }
 
-    protected URI getURI() {
+    public URI getURI() {
         return server.getURI();
     }
 

@@ -16,7 +16,8 @@ public class ApplicationServer extends WebServer {
         super(port);
     }
 
-    public static void main(String[] args) throws Exception {
+    @Override
+    public void start() throws Exception {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
 
@@ -25,19 +26,22 @@ public class ApplicationServer extends WebServer {
         flyway.setDataSource(database.getDataSource());
         flyway.migrate();
 
+        addHandler(shutdownHandler());
+        addHandler(createWebAppContext("/events"));
+        addHandler(createRedirectContextHandler("/", "/events"));
+        super.start();
+    }
+
+    public static void main(String[] args) throws Exception {
         int port = 10080;
         if (System.getenv("PORT") != null) {
             port = Integer.parseInt(System.getenv("PORT"));
         }
 
         ApplicationServer server = new ApplicationServer(port);
-        server.addHandler(server.shutdownHandler());
-        server.addHandler(server.createWebAppContext("/events"));
-        server.addHandler(server.createRedirectContextHandler("/", "/events"));
         server.start();
 
         log.info("Started " + server.getURI());
     }
-
 
 }
