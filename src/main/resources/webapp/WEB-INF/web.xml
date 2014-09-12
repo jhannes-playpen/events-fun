@@ -13,12 +13,12 @@
 
   <servlet>
     <servlet-name>oauth2callback</servlet-name>
-    <servlet-class>com.johannesbrodwall.events.web.Oauth2CallbackServlet</servlet-class>
+    <servlet-class>com.johannesbrodwall.infrastructure.oauth.Oauth2CallbackServlet</servlet-class>
   </servlet>
 
   <servlet>
     <servlet-name>authServlet</servlet-name>
-    <servlet-class>com.johannesbrodwall.events.web.AuthServlet</servlet-class>
+    <servlet-class>com.johannesbrodwall.infrastructure.oauth.AuthServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
