@@ -10,7 +10,7 @@ import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
-public class EventCategory implements JSONConvertible {
+public class Category implements JSONConvertible {
 
     @Getter
     private Integer id;
@@ -18,7 +18,7 @@ public class EventCategory implements JSONConvertible {
     @Getter
     private String displayName, color;
 
-    public EventCategory(Integer id, String displayName, String color) {
+    public Category(Integer id, String displayName, String color) {
         this.id = id;
         this.displayName = displayName;
         this.color = color;
@@ -32,8 +32,8 @@ public class EventCategory implements JSONConvertible {
             .put("color", color);
     }
 
-    public static EventCategory fromJSON(JSONObject object) {
-        return new EventCategory(
+    public static Category fromJSON(JSONObject object) {
+        return new Category(
                 (Integer)object.opt("id"),
                 object.getString("displayName"),
                 object.getString("color"));

@@ -1,4 +1,4 @@
-package com.johannesbrodwall.events;
+package com.johannesbrodwall.events.holiday;
 
 import java.io.BufferedReader;
 import java.io.IOException;

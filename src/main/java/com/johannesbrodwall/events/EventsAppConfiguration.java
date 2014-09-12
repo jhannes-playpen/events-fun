@@ -1,4 +1,4 @@
-package com.johannesbrodwall.events.category;
+package com.johannesbrodwall.events;
 
 import com.johannesbrodwall.infrastructure.AppConfiguration;
 

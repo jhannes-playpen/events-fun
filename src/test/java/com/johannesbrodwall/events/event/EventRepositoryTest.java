@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.johannesbrodwall.events.SampleEventData;
 import com.johannesbrodwall.events.category.CategoryRepository;
-import com.johannesbrodwall.events.category.EventCategory;
+import com.johannesbrodwall.events.category.Category;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.TestDatabase;
 
@@ -17,8 +17,8 @@ public class EventRepositoryTest {
 
     private EventRepository repository = new EventRepository();
 
-    private EventCategory category1 = SampleEventData.sampleCategory();
-    private EventCategory category2 = SampleEventData.sampleCategory();
+    private Category category1 = SampleEventData.sampleCategory();
+    private Category category2 = SampleEventData.sampleCategory();
 
     @Before
     public void storeBaseData() {

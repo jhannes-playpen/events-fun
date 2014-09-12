@@ -10,9 +10,9 @@ import com.johannesbrodwall.infrastructure.webserver.WebServer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ApplicationServer extends WebServer {
+public class EventsApplicationServer extends WebServer {
 
-    public ApplicationServer(int port) {
+    public EventsApplicationServer(int port) {
         super(port);
     }
 
@@ -38,7 +38,7 @@ public class ApplicationServer extends WebServer {
             port = Integer.parseInt(System.getenv("PORT"));
         }
 
-        ApplicationServer server = new ApplicationServer(port);
+        EventsApplicationServer server = new EventsApplicationServer(port);
         server.start();
 
         log.info("Started " + server.getURI());

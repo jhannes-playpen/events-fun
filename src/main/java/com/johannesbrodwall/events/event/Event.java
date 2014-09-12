@@ -2,7 +2,7 @@ package com.johannesbrodwall.events.event;
 
 import org.json.JSONObject;
 
-import com.johannesbrodwall.events.category.EventCategory;
+import com.johannesbrodwall.events.category.Category;
 import com.johannesbrodwall.infrastructure.web.JSONConvertible;
 
 import java.time.LocalDate;
@@ -24,14 +24,14 @@ public class Event implements JSONConvertible {
     private final String displayName;
 
     @Getter
-    private EventCategory category;
+    private Category category;
 
     @Getter @Setter
     private LocalDate startDate, endDate;
 
     private Integer categoryId;
 
-    public Event(String displayName, EventCategory category) {
+    public Event(String displayName, Category category) {
         this.displayName = displayName;
         this.category = category;
     }

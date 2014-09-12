@@ -1,12 +1,13 @@
 package com.johannesbrodwall.events;
 
-import com.johannesbrodwall.events.calendar.CalendarController;
 import com.johannesbrodwall.events.category.CategoryController;
 import com.johannesbrodwall.events.event.EventController;
+import com.johannesbrodwall.events.holiday.CalendarController;
 import com.johannesbrodwall.events.project.ProjectController;
 import com.johannesbrodwall.infrastructure.AppConfiguration;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.Transaction;
+import com.johannesbrodwall.infrastructure.oauth.ClientUserSession;
 import com.johannesbrodwall.infrastructure.web.GetController;
 import com.johannesbrodwall.infrastructure.web.PostController;
 import com.johannesbrodwall.infrastructure.web.ServletUtils;

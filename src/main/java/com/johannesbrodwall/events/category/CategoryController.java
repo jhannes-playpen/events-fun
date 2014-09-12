@@ -18,7 +18,7 @@ public class CategoryController extends JSONController {
 
     @Override
     public void postJSON(JSONObject object) {
-        repository.insert(EventCategory.fromJSON(object));
+        repository.insert(Category.fromJSON(object));
     }
 
 

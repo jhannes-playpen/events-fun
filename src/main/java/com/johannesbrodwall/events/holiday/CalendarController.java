@@ -1,9 +1,8 @@
-package com.johannesbrodwall.events.calendar;
+package com.johannesbrodwall.events.holiday;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.johannesbrodwall.events.HolidayCalendar;
 import com.johannesbrodwall.events.event.Event;
 import com.johannesbrodwall.events.event.EventRepository;
 import com.johannesbrodwall.infrastructure.web.GetController;

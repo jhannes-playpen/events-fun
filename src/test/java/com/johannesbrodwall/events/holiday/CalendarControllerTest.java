@@ -1,4 +1,4 @@
-package com.johannesbrodwall.events.calendar;
+package com.johannesbrodwall.events.holiday;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,9 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import com.johannesbrodwall.events.SampleEventData;
-import com.johannesbrodwall.events.category.EventCategory;
+import com.johannesbrodwall.events.category.Category;
 import com.johannesbrodwall.events.event.Event;
+import com.johannesbrodwall.events.holiday.CalendarController;
 import com.johannesbrodwall.infrastructure.SampleData;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class CalendarControllerTest {
     private CalendarController calendarController = new CalendarController();
     private LocalDate startDate = SampleData.randomDate();
     private LocalDate endDate = startDate.plusDays(20);
-    private EventCategory category = SampleEventData.sampleCategory();
+    private Category category = SampleEventData.sampleCategory();
     private Map<LocalDate, String> holidays = new HashMap<LocalDate, String>();
 
     @Test

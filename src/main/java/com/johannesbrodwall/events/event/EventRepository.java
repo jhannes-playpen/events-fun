@@ -1,7 +1,7 @@
 package com.johannesbrodwall.events.event;
 
 import com.johannesbrodwall.events.category.CategoryRepository;
-import com.johannesbrodwall.events.category.EventCategory;
+import com.johannesbrodwall.events.category.Category;
 import com.johannesbrodwall.infrastructure.db.Database;
 import com.johannesbrodwall.infrastructure.db.Repository;
 
@@ -19,7 +19,7 @@ public class EventRepository implements Repository<Event> {
 
     @Override
     public List<Event> findAll() {
-        Map<Integer, EventCategory> categories = findAllCategories();
+        Map<Integer, Category> categories = findAllCategories();
         return Database.executeQueryForAll("select * from events", (rs) -> createEvent(rs, categories));
     }
 
@@ -37,7 +37,7 @@ public class EventRepository implements Repository<Event> {
 
     @Override
     public Event fetch(Integer id) {
-        Map<Integer, EventCategory> categories = findAllCategories();
+        Map<Integer, Category> categories = findAllCategories();
 
         String query = "select * from events where id = ?";
         return Database.executePreparedQuery(query, (PreparedStatement stmt) -> {
@@ -45,7 +45,7 @@ public class EventRepository implements Repository<Event> {
         }, (ResultSet rs) -> createEvent(rs, categories));
     }
 
-    private Event createEvent(ResultSet rs, Map<Integer, EventCategory> categories) throws SQLException {
+    private Event createEvent(ResultSet rs, Map<Integer, Category> categories) throws SQLException {
         Event event = new Event(rs.getString("displayName"), categories.get(rs.getInt("category_id")));
         event.setId(rs.getInt("id"));
         event.setStartDate(rs.getDate("start_date").toLocalDate());
@@ -53,8 +53,8 @@ public class EventRepository implements Repository<Event> {
         return event;
     }
 
-    private Map<Integer, EventCategory> findAllCategories() {
-        Map<Integer, EventCategory> categories = new HashMap<>();
+    private Map<Integer, Category> findAllCategories() {
+        Map<Integer, Category> categories = new HashMap<>();
         categoryRepository.findAll().stream().forEach((c) -> categories.put(c.getId(), c));
         return categories;
     }

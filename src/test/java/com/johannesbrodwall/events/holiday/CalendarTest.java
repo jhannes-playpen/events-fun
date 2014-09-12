@@ -1,4 +1,4 @@
-package com.johannesbrodwall.events;
+package com.johannesbrodwall.events.holiday;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,14 +22,5 @@ public class CalendarTest {
 
         assertThat(holidays.get(LocalDate.of(2014, 5, 17))).isEqualTo("Constitution Day");
     }
-
-    @Test
-    public void shouldParseICalWebFeed() throws IOException {
-        HolidayCalendar holidays = new HolidayCalendar(new URL("http://www.officeholidays.com/ics/ics_country.php?tbl_country=Norway"));
-
-        assertThat(holidays.get(LocalDate.of(2014, 5, 17))).isEqualTo("Constitution Day");
-        assertThat(holidays.getHolidays().get(LocalDate.of(2014, 5, 17))).isEqualTo("Constitution Day");
-    }
-
 
 }

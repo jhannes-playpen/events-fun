@@ -18,7 +18,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldRetrieveCategory() {
-        EventCategory category = SampleEventData.sampleCategory();
+        Category category = SampleEventData.sampleCategory();
 
         database.executeInTransaction(() -> repository.insert(category));
 
@@ -28,7 +28,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldNotWriteOnRollback() {
-        EventCategory category = SampleEventData.sampleCategory();
+        Category category = SampleEventData.sampleCategory();
 
         try (Transaction tx = database.transaction()) {
             repository.insert(category);
@@ -45,7 +45,7 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldFindCategories() throws Exception {
-        EventCategory category = SampleEventData.sampleCategory();
+        Category category = SampleEventData.sampleCategory();
 
         try (Transaction tx = database.transaction()) {
             repository.insert(category);
@@ -60,9 +60,9 @@ public class CategoryRepositoryTest {
 
     @Test
     public void shouldDeserializeJSON() {
-        EventCategory category = SampleEventData.sampleCategory();
+        Category category = SampleEventData.sampleCategory();
         System.out.println(category.toJSON());
-        assertThat(category).isEqualTo(EventCategory.fromJSON(category.toJSON()));
+        assertThat(category).isEqualTo(Category.fromJSON(category.toJSON()));
     }
 
 }
